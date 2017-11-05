@@ -1,12 +1,15 @@
 import requests
 import time
 from urllib.parse import urlencode
+import cv2
+from PIL import Image
+import os
 
 
 class WenJuanXing(object):
     def __init__(self, q_num, q_data):
         self.base_url = 'https://www.wjx.cn/jq/%s.aspx'
-        self.base_submit = 'http://www.sojump.com/handler/processjq.ashx?'
+        self.base_submit = 'https://www.sojump.com/handler/processjq.ashx?'
         self.base_spam = 'https://www.wjx.cn/AntiSpamImageGen.aspx?'
         self.sess = requests.session()
         self.headers = {
@@ -46,27 +49,39 @@ class WenJuanXing(object):
         response = self.sess.get(url)
         with open('tmp_img.gif', 'wb') as f:
             f.write(response.content)
-        # TODO: recognize characters in image
-        self.validate_text = 'something'
+        # TODO: try captcha solver
+        Image.open('tmp_img.gif').convert('RGB').save('tmp_img.jpg')
+        img = cv2.imread('tmp_img.jpg', cv2.IMREAD_COLOR)
+        os.remove('tmp_img.gif')
+        os.remove('tmp_img.jpg')
+        cv2.imshow('captcha', img)
+        cv2.waitKey(0)
+        self.validate_text = input('验证码: ')
+        cv2.destroyAllWindows()
 
     def submitForm(self):
+        url = self.base_submit + urlencode(self.stringParams())
+        response = self.sess.post(url, data={'submitdata': self.submitdata})
+        return response
+
+    def resetData(self):
         self.getRandNum()
         self.t = str(int(time.time() * 1000))
         self.starttime = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime())
-        url = self.base_submit + urlencode(self.stringParams())
-        self.sess.post(url, data={'submitdata': self.submitdata})
-
-    def clearCookie(self):
         self.sess.cookies.clear()
 
 
 def main():
+    print('输入验证码时，先关闭图片窗口再输入。')
     q_num = input('问卷号：')
     q_data = input('submitdata（自行理解）：')
-    wjx = WenJuanXing('', '')
-    # for i in range(100):
-    #     wjx.submitForm()
-    #     wjx.clearCookie()
+    iter = int(input('次数：'))
+    wjx = WenJuanXing(q_num, q_data)
+    for i in range(iter):
+        wjx.resetData()
+        wjx.antiSpam()
+        response = wjx.submitForm()
+        # print(response.content.decode('UTF-8'))
 
 
 if __name__ == '__main__':
