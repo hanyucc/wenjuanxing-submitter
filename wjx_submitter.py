@@ -9,7 +9,7 @@ import os
 class WenJuanXing(object):
     def __init__(self, q_num, q_data):
         self.base_url = 'https://www.wjx.cn/jq/%s.aspx'
-        self.base_submit = 'https://www.sojump.com/handler/processjq.ashx?'
+        self.base_submit = 'https://www.wjx.cn/handler/processjq.ashx?'
         self.base_spam = 'https://www.wjx.cn/AntiSpamImageGen.aspx?'
         self.sess = requests.session()
         self.headers = {
@@ -81,7 +81,7 @@ def main():
         wjx.resetData()
         wjx.antiSpam()
         response = wjx.submitForm()
-        # print(response.content.decode('UTF-8'))
+        print(response.content.decode('UTF-8'))
 
 
 if __name__ == '__main__':
