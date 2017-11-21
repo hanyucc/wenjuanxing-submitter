@@ -7,9 +7,9 @@
 * Pillow
 * OpenCV 3
 ```
-pip install requests
-pip install pillow
-pip install opencv-python
+pip3 install requests
+pip3 install pillow
+pip3 install opencv-python
 ```
 
 ## Usage
