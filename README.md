@@ -14,7 +14,7 @@ pip3 install opencv-python
 
 ## Usage
 ```
-python wjx_submitter.py
+python3 wjx_submitter.py
 ```
 
 输入问卷星问卷号与submitdata的值（自行探索这是什么）
