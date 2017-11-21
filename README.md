@@ -1,4 +1,4 @@
-# WenJuanXingSubmitter
+# wenjuanxing-submitter
 可用于（批量）提交问卷星问卷。
 
 ## Requirements
