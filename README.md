@@ -18,4 +18,4 @@ python3 wjx_submitter.py
 ```
 
 输入问卷星问卷号与submitdata的值（自行探索这是什么）
-批量刷票需要输入验证码
+可能需要输入验证码
